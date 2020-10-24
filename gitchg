@@ -1,0 +1,100 @@
+# gitchg: a tool to show git commit code
+#
+# usage: gitchg commitid [file/dir]
+#
+# Author: LonuxLi <lonuxli.64@gmail.com>
+#
+# Config: configuration for git difftool before use
+#	git config --global diff.tool vimdiff
+#	git config --global difftool.prompt false
+#	git config --global alias.d difftool
+#
+# Usage: gitchg commitid [file/dir] 
+
+
+#bin/bash
+
+#color define
+S_COLOR='\e[1;33m'
+E_COLOR='\e[1;31m'
+RES='\E[0m'
+
+
+if [ -z $1 ] ;then
+	echo -e "${E_COLOR}usage:gitchg commitid [file/dir]${RES}"
+	exit
+fi
+
+CID_C=`git log --oneline -2 $1 $2 | sed -n 1p | awk -F " " '{print $1}'`
+if [  $? -ne 0 ];then
+	echo -e "${E_COLOR}$0:get commitid fail${RES}"
+fi
+
+CID_P=`git log --oneline -2 $1 $2 | sed -n 2p | awk -F " " '{print $1}'`
+if [  $? -ne 0 ];then
+	echo -e "${E_COLOR}$0:get commitid fail${RES}"
+fi
+
+
+if [ -z $CID_C ] ;then
+	echo -e "${E_COLOR}$0:commitid not in git repository${RES}"
+	exit
+fi
+
+if [ -z $CID_P ] ;then
+	echo -e "${E_COLOR}$0:commitid not in git repository${RES}"
+	exit
+fi
+
+chgexit='[EXIT && <-_->]                                    '
+cidmesg='[commit message]'
+diffcode='[commit diffcode]'
+diffall='[vimdiff all]'
+
+if [ ! -z $2 ] ;then
+	git difftool $CID_P $CID_C $2
+else
+
+	files=($(git diff --stat $CID_P $CID_C | head -n -1 | awk -F " " '{print $1}')) 
+	
+	while true;do
+		echo -e "${S_COLOR}+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+		echo -e "Plese enter select number:"
+		select file in "${chgexit}" "${cidmesg}" "${diffcode}" "${diffall}" ${files[@]} ;
+		do
+			case $file in
+				"${chgexit}")
+					echo -e "${RES}"
+					exit
+			;;
+				"${cidmesg}")
+					git show --summary $CID_C
+					break
+			;;
+				"${diffcode}")
+					git diff $CID_P $CID_C
+					break
+			;;
+				"${diffall}")
+					git difftool $CID_P $CID_C
+					break
+			;;
+				*)
+				if [ ! -z $file ] ;then
+					if [ ! -f "$file" ]; then
+						touch "$file"
+						git difftool $CID_P $CID_C $file
+						rm "$file"
+					else
+						git difftool $CID_P $CID_C $file
+					fi
+				else
+					echo -e "${E_COLOR}ERROR:please enter correct select number!${RES}"
+				fi
+				break
+			;;
+	
+		esac
+	done
+	done
+fi

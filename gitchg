@@ -46,6 +46,7 @@ if [ -z $CID_P ] ;then
 	exit
 fi
 
+#Add spaces to the string to make one option per line when selecting
 chgexit='[EXIT && <-_->]                                    '
 cidmesg='[commit message]'
 diffcode='[commit diffcode]'

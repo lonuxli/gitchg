@@ -1,7 +1,5 @@
 # gitchg: a tool to show git commit code
 #
-# usage: gitchg commitid [file/dir]
-#
 # Author: LonuxLi <lonuxli.64@gmail.com>
 #
 # Config: configuration for git difftool before use

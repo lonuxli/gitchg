@@ -1,6 +1,6 @@
 # gitchg: a tool to show git commit code
 #
-# Author: LonuxLi <lonuxli.64@gmail.com>
+# Author: Long Li <lonuxli.64@gmail.com>
 #
 # Config: configuration for git difftool before use
 #	git config --global diff.tool vimdiff

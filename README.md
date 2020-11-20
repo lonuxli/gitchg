@@ -22,9 +22,10 @@ Configure vimdiff by configuring ~/.vimrc file, For easy viewing and comparison,
 it is recommended to use the peaksea vim color plug-in.
 	
 ~/.vimrc configurtion:
-(```)
+
+```
 	if &diff
 		colors peaksea
 		set t_Co=256
 	endif
-(```)
+```

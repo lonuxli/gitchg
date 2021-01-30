@@ -1,4 +1,5 @@
 #gitchg
+---
 
 ##Introduction 
 
@@ -12,9 +13,9 @@ before use.
 
 ##git config
 
-git config --global diff.tool vimdiff
-git config --global difftool.prompt false
-git config --global alias.d difftool
+- git config --global diff.tool vimdiff
+- git config --global difftool.prompt false
+- git config --global alias.d difftool
 
 ##vim diff
 
@@ -23,9 +24,7 @@ it is recommended to use the peaksea vim color plug-in.
 	
 ~/.vimrc configurtion:
 
-```
 	if &diff
 		colors peaksea
 		set t_Co=256
 	endif
-```
